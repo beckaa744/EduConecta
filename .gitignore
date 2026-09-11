@@ -1,0 +1,13 @@
+# Maven (dentro de backend/)
+backend/target/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
