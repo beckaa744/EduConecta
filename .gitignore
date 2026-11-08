@@ -1,5 +1,5 @@
 # Maven (dentro de backend/)
-backend/target/
+src/backend/target/
 
 # IntelliJ
 .idea/
