@@ -40,10 +40,12 @@ CREATE TABLE sessoes (
   id_sessao INT AUTO_INCREMENT PRIMARY KEY,
   id_aluno INT NOT NULL,
   id_monitor INT NOT NULL,
+  id_materia INT NOT NULL,
   data_hora DATETIME NOT NULL,
   status ENUM('pendente','confirmada','concluida','cancelada') DEFAULT 'pendente',
   FOREIGN KEY (id_aluno) REFERENCES alunos(id_aluno),
-  FOREIGN KEY (id_monitor) REFERENCES monitores(id_monitor)
+  FOREIGN KEY (id_monitor) REFERENCES monitores(id_monitor),
+  FOREIGN KEY (id_materia) REFERENCES materias(id_materia)
 );
 
 CREATE TABLE avaliacoes (

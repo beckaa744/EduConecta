@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonitorDao {
+public class MonitorDAO {
     public void inserir(Monitor m) throws SQLException {
         String sqlUsuario = "INSERT INTO usuarios (nome, email, senha_hash) VALUES (?, ?, ?)";
         String sqlMonitor = "INSERT INTO monitores (id_monitor, biografia) VALUES (?, ?)";
@@ -111,6 +111,69 @@ public class MonitorDao {
         }
     }
 
+    // RF03: o monitor passa a dominar uma matéria
+    public void vincularMateria(int idMonitor, int idMateria) throws SQLException {
+        String sql = "INSERT INTO monitor_materia (id_monitor, id_materia) VALUES (?, ?)";
+        try (Connection con = ConexaoFactory.getConexao();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMonitor);
+            ps.setInt(2, idMateria);
+            ps.executeUpdate();
+        }
+    }
+
+    public void desvincularMateria(int idMonitor, int idMateria) throws SQLException {
+        String sql = "DELETE FROM monitor_materia WHERE id_monitor = ? AND id_materia = ?";
+        try (Connection con = ConexaoFactory.getConexao();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMonitor);
+            ps.setInt(2, idMateria);
+            ps.executeUpdate();
+        }
+    }
+
+    // RN01 (parte 1): o monitor tem ao menos uma matéria?
+    public boolean possuiMateria(int idMonitor) throws SQLException {
+        String sql = "SELECT 1 FROM monitor_materia WHERE id_monitor = ? LIMIT 1";
+        try (Connection con = ConexaoFactory.getConexao();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMonitor);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    // RN01 (parte 2): o monitor domina esta matéria específica?
+    public boolean dominaMateria(int idMonitor, int idMateria) throws SQLException {
+        String sql = "SELECT 1 FROM monitor_materia WHERE id_monitor = ? AND id_materia = ?";
+        try (Connection con = ConexaoFactory.getConexao();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMonitor);
+            ps.setInt(2, idMateria);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
+    // RF04: buscar monitores por matéria
+    public List<Monitor> buscarPorMateria(int idMateria) throws SQLException {
+        String sql = "SELECT u.id_usuario, u.nome, u.email, m.biografia, m.media_avaliacao "
+                + "FROM usuarios u "
+                + "JOIN monitores m ON u.id_usuario = m.id_monitor "
+                + "JOIN monitor_materia mm ON m.id_monitor = mm.id_monitor "
+                + "WHERE mm.id_materia = ?";
+        List<Monitor> lista = new ArrayList<>();
+        try (Connection con = ConexaoFactory.getConexao();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idMateria);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) lista.add(montarMonitor(rs));
+            }
+        }
+        return lista;
+    }
     private Monitor montarMonitor(ResultSet rs) throws SQLException {
         Monitor m = new Monitor();
         m.setId(rs.getInt("id_usuario"));

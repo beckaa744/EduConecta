@@ -1,23 +1,24 @@
 package br.com.educonecta.model;
 
-import java.util.List;
-import java.time.LocalDateTime;
-
 public class Aluno extends Usuario {
+    private String curso;
+    private String periodo;
 
+    public Aluno() {}
+
+    public Aluno(int id, String nome, String email, String senha, String curso, String periodo) {
+        super(id, nome, email, senha);
+        this.curso = curso;
+        this.periodo = periodo;
+    }
+
+    @Override
     public String visualizarPerfil() {
-        return null;
+        return "Aluno: " + getNome() + " | Curso: " + curso + " | Período: " + periodo;
     }
 
-    public List<Monitor> buscarMonitor(Materia materia) {
-        return null;
-    }
-
-    public Sessao solicitarSessao(Monitor monitor, Materia materia, LocalDateTime horario) {
-        return null;
-    }
-
-    public Avaliacao avaliarMonitor(Sessao sessao, int nota, String comentario) {
-        return null;
-    }
+    public String getCurso() { return curso; }
+    public void setCurso(String curso) { this.curso = curso; }
+    public String getPeriodo() { return periodo; }
+    public void setPeriodo(String periodo) { this.periodo = periodo; }
 }
