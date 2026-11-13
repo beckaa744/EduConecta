@@ -128,6 +128,8 @@ O sistema roda pelo console. As classes abaixo, em `src/backend/src/main/java/br
 | `TesteMateria` | CRUD de matéria e vínculo monitor ↔ matéria (RN01) |
 | `TesteSessao` | Criação de sessão, mudança de status e detecção de conflito de horário |
 | `TesteSessaoService` | Regras RN01 e RN02 e o ciclo completo da sessão: solicitar, confirmar e concluir. Mostra também os casos recusados |
+| `TesteAvaliacao` | Regra RN03: recusa avaliar sessão pendente, confirmada, com nota inválida ou já avaliada; grava e lê a avaliação no banco |
+| `TesteCrud` | CRUD completo (inserir, buscar, listar, atualizar e deletar) de Monitor, Aluno e Disponibilidade, e a exclusão em cascata no banco |
 
 Cada teste apaga os registros que criou. Se uma execução for interrompida por erro, podem sobrar dados e a próxima dará erro de e-mail duplicado. Em um banco de testes, limpe com:
 
@@ -162,7 +164,7 @@ Lista completa do documento da 1ª entrega (`docs/entrega-1.pdf`), com a situaç
 | RF06 | O sistema deve validar a compatibilidade do horário solicitado com a disponibilidade cadastrada pelo Monitor antes da confirmação. | Implementado (`SessaoService.confirmar`, `Disponibilidade.cobre`) |
 | RF07 | O sistema deve registrar a Sessão e seu status. | Implementado (`SessaoDAO`, `StatusSessao`) |
 | RF08 | O sistema deve permitir concluir uma Sessão. | Implementado (`SessaoService.concluir`) |
-| RF09 | O sistema deve permitir ao Aluno avaliar o Monitor somente após a conclusão da Sessão. | Em andamento (`AvaliacaoService`) |
+| RF09 | O sistema deve permitir ao Aluno avaliar o Monitor somente após a conclusão da Sessão. | Implementado (`AvaliacaoService.avaliar`) |
 | RF10 | O sistema deve armazenar nota e comentário da Avaliação. | Implementado (`AvaliacaoDAO`) |
 | RF11 | O sistema deve permitir o envio de notificação por e-mail relacionada à Sessão. | Parcial: `NotificacaoEmail` simula o envio no console |
 | RF12 | O sistema deve manter relacionamentos consistentes entre usuários, monitores, matérias, sessões e avaliações. | Implementado (chaves estrangeiras do `schema.sql`) |
@@ -174,7 +176,7 @@ Lista completa do documento da 1ª entrega (`docs/entrega-1.pdf`), com a situaç
 |---|---|---|
 | RN01 | Um Monitor deve ter ao menos uma matéria de domínio cadastrada antes de receber solicitações de sessão. | `SessaoService.solicitar`: recusa o monitor sem matéria e também o que não domina a matéria escolhida |
 | RN02 | Uma Sessão só pode ser confirmada se houver compatibilidade entre o horário solicitado pelo Aluno e a disponibilidade cadastrada pelo Monitor. | `SessaoService.confirmar`: a sessão (60 minutos) precisa caber inteira em uma janela semanal do monitor (`Disponibilidade.cobre`). Também recusa conflito com outra sessão do mesmo monitor |
-| RN03 | Um Aluno só pode avaliar um Monitor após a conclusão efetiva de uma Sessão. | `AvaliacaoService` (em andamento) |
+| RN03 | Um Aluno só pode avaliar um Monitor após a conclusão efetiva de uma Sessão. | `AvaliacaoService.avaliar`: recusa a avaliação de sessão que não está concluída, nota fora do intervalo de 1 a 5 e segunda avaliação da mesma sessão |
 
 ## Partes interessadas
 
@@ -217,7 +219,7 @@ Prazo de entrega: **13/11/2026**.
 | 13/11 | DAOs de Matéria, Disponibilidade e Sessão; models `Sessao`, `StatusSessao` e `Disponibilidade`; vínculo monitor ↔ matéria; `SessaoService` (RN01 e RN02); classes de demonstração | Rebecca de Assis Nezio | Concluído |
 | 13/11 | `AlunoDAO`, `Avaliacao`, `AvaliacaoDAO`, `Notificacao` e `NotificacaoEmail` | Livia Cilião Barião Gavioli | Concluído |
 | 13/11 | Atualização do DER e do Diagrama de Classes (`disponibilidades`, `id_materia`, `StatusSessao`, serviços) | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Concluído |
-| 13/11 | `AvaliacaoService` (RN03) e teste | Rebecca de Assis Nezio | Em andamento |
+| 13/11 | `AvaliacaoService` (RN03) e `TesteAvaliacao` | Rebecca de Assis Nezio | Concluído |
 | 13/11 | Menu de console no `App.java` demonstrando o fluxo completo | Rebecca de Assis Nezio | A fazer |
 | 13/11 | README final e registro de alterações | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Em andamento |
 | 13/11 | Entrega da 2ª etapa (código-fonte e script do banco no GitHub) | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | A fazer |
@@ -268,6 +270,8 @@ EduConecta/
             ├── TesteMateria.java
             ├── TesteSessao.java
             ├── TesteSessaoService.java
+            ├── TesteAvaliacao.java
+            ├── TesteCrud.java
             ├── config/
             │   └── ConexaoFactory.java
             ├── model/

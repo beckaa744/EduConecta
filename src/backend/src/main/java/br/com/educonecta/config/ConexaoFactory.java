@@ -9,7 +9,7 @@ public class ConexaoFactory {
 
     private static final String URL = "jdbc:mysql://localhost:3306/educonecta";
     private static final String USUARIO = "root";
-    private static final String SENHA = "sua_senha";
+    private static final String SENHA = "35893802";
 
     public static Connection getConexao() throws SQLException {
         return DriverManager.getConnection(URL, USUARIO, SENHA);
