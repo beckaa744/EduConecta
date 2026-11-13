@@ -41,7 +41,7 @@ O projeto está alinhado ao **ODS 4 — Educação de Qualidade** (Agenda 2030 d
 ## Status das entregas
 
 - [x] **1ª entrega:** Descoberta, Concepção, Justificativa Técnica, Diagrama de Classes e DER (`docs/entrega-1.pdf`)
-- [ ] **2ª entrega (prazo: 13/11/2026):** software funcional com CRUD, persistência em MySQL e regras de negócio (em andamento; veja a coluna *Situação* na tabela de requisitos)
+- [x] **2ª entrega (prazo: 13/11/2026):** software funcional com CRUD, persistência em MySQL, regras de negócio e menu de console (veja a coluna *Situação* na tabela de requisitos)
 
 ## Como executar
 
@@ -221,8 +221,8 @@ Prazo de entrega: **13/11/2026**.
 | 13/11 | Atualização do DER e do Diagrama de Classes (`disponibilidades`, `id_materia`, `StatusSessao`, serviços) | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Concluído |
 | 13/11 | `AvaliacaoService` (RN03) e `TesteAvaliacao` | Rebecca de Assis Nezio | Concluído |
 | 13/11 | Menu de console no `App.java` demonstrando o fluxo completo | Rebecca de Assis Nezio | Concluído |
-| 13/11 | README final e registro de alterações | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Em andamento |
-| 13/11 | Entrega da 2ª etapa (código-fonte e script do banco no GitHub) | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | A fazer |
+| 13/11 | README final e registro de alterações | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Concluído |
+| 13/11 | Entrega da 2ª etapa (código-fonte e script do banco no GitHub) | Livia Cilião Barião Gavioli e Rebecca de Assis Nezio | Concluído |
 
 ## Arquitetura e tecnologias
 
